@@ -5,6 +5,7 @@ namespace Database\Factories;
 use App\Enums\PaymentRequestStatus;
 use App\Models\PaymentRequest;
 use App\Models\User;
+use App\Services\ExchangeRates\EurAmountConverter;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -25,7 +26,10 @@ class PaymentRequestFactory extends Factory
             'local_currency' => 'BRL',
             'purpose' => fake()->sentence(),
             'exchange_rate' => $rate,
-            'eur_amount' => round($localAmount / $rate, 4),
+            'eur_amount' => app(EurAmountConverter::class)->fromLocalAmount(
+                (string) $localAmount,
+                (string) $rate,
+            ),
             'rate_source' => 'factory',
             'rate_fetched_at' => now(),
             'status' => PaymentRequestStatus::Pending,
@@ -47,6 +51,20 @@ class PaymentRequestFactory extends Factory
         return $this->state(fn () => [
             'status' => PaymentRequestStatus::Expired,
         ]);
+    }
+
+    public function forCurrency(string $currencyCode, string $rate): static
+    {
+        return $this->state(function (array $attributes) use ($currencyCode, $rate) {
+            return [
+                'local_currency' => $currencyCode,
+                'exchange_rate' => $rate,
+                'eur_amount' => app(EurAmountConverter::class)->fromLocalAmount(
+                    (string) $attributes['local_amount'],
+                    $rate,
+                ),
+            ];
+        });
     }
 
     private function reviewed(PaymentRequestStatus $status, ?User $reviewer): static
