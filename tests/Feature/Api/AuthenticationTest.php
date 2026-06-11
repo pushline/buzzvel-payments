@@ -107,7 +107,9 @@ class AuthenticationTest extends TestCase
             'password' => 'wrong-password',
         ])
             ->assertUnprocessable()
-            ->assertJsonValidationErrors('email');
+            ->assertJsonValidationErrors('email')
+            ->assertJsonPath('error.code', 'VALIDATION_ERROR')
+            ->assertJsonPath('error.status', 422);
 
         $this->assertDatabaseCount('personal_access_tokens', 0);
     }

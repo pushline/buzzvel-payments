@@ -17,6 +17,20 @@ class HealthCheckTest extends TestCase
     {
         $this->getJson('/api/auth/user')
             ->assertUnauthorized()
-            ->assertJson(['message' => 'Unauthenticated.']);
+            ->assertJson([
+                'message' => 'Unauthenticated.',
+                'error' => [
+                    'code' => 'UNAUTHENTICATED',
+                    'status' => 401,
+                ],
+            ]);
+    }
+
+    public function test_api_errors_are_json_even_without_an_accept_header(): void
+    {
+        $this->get('/api/auth/user')
+            ->assertUnauthorized()
+            ->assertHeader('content-type', 'application/json')
+            ->assertJsonPath('error.code', 'UNAUTHENTICATED');
     }
 }
