@@ -15,7 +15,7 @@ class HealthCheckTest extends TestCase
 
     public function test_protected_api_routes_return_json_errors(): void
     {
-        $this->getJson('/api/user')
+        $this->getJson('/api/auth/user')
             ->assertUnauthorized()
             ->assertJson(['message' => 'Unauthenticated.']);
     }

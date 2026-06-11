@@ -9,6 +9,8 @@ export default function Register() {
     const { data, setData, post, processing, errors, reset } = useForm({
         name: '',
         email: '',
+        country_code: '',
+        currency_code: '',
         password: '',
         password_confirmation: '',
     });
@@ -58,6 +60,38 @@ export default function Register() {
                     />
 
                     <InputError message={errors.email} className="mt-2" />
+                </div>
+
+                <div className="mt-4">
+                    <InputLabel htmlFor="country_code" value="Country code" />
+
+                    <TextInput
+                        id="country_code"
+                        name="country_code"
+                        value={data.country_code}
+                        className="mt-1 block w-full uppercase"
+                        maxLength={2}
+                        onChange={(e) => setData('country_code', e.target.value)}
+                        required
+                    />
+
+                    <InputError message={errors.country_code} className="mt-2" />
+                </div>
+
+                <div className="mt-4">
+                    <InputLabel htmlFor="currency_code" value="Local currency" />
+
+                    <TextInput
+                        id="currency_code"
+                        name="currency_code"
+                        value={data.currency_code}
+                        className="mt-1 block w-full uppercase"
+                        maxLength={3}
+                        onChange={(e) => setData('currency_code', e.target.value)}
+                        required
+                    />
+
+                    <InputError message={errors.currency_code} className="mt-2" />
                 </div>
 
                 <div className="mt-4">
