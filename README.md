@@ -32,7 +32,7 @@ responsive React/Inertia demonstration interface.
 
 ```powershell
 git clone <repository-url>
-cd buzzvel-laravel
+cd buzzvel-payments
 composer install
 npm install
 Copy-Item .env.example .env
