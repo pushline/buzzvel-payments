@@ -21,7 +21,10 @@ Route::prefix('auth')->group(function () {
 
 Route::middleware('auth:sanctum')->group(function () {
     Route::apiResource('payment-requests', PaymentRequestController::class)
-        ->only(['index', 'store', 'show']);
-    Route::post('payment-requests/{payment_request}/approve', [PaymentRequestController::class, 'approve']);
-    Route::post('payment-requests/{payment_request}/reject', [PaymentRequestController::class, 'reject']);
+        ->only(['index', 'store', 'show'])
+        ->names('api.payment-requests');
+    Route::post('payment-requests/{payment_request}/approve', [PaymentRequestController::class, 'approve'])
+        ->name('api.payment-requests.approve');
+    Route::post('payment-requests/{payment_request}/reject', [PaymentRequestController::class, 'reject'])
+        ->name('api.payment-requests.reject');
 });

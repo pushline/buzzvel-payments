@@ -1,5 +1,6 @@
 import ApplicationLogo from '@/Components/ApplicationLogo';
 import Dropdown from '@/Components/Dropdown';
+import FlashMessages from '@/Components/FlashMessages';
 import NavLink from '@/Components/NavLink';
 import ResponsiveNavLink from '@/Components/ResponsiveNavLink';
 import { Link, usePage } from '@inertiajs/react';
@@ -7,6 +8,7 @@ import { useState } from 'react';
 
 export default function AuthenticatedLayout({ header, children }) {
     const user = usePage().props.auth.user;
+    const isFinance = user.role === 'finance';
 
     const [showingNavigationDropdown, setShowingNavigationDropdown] =
         useState(false);
@@ -25,15 +27,30 @@ export default function AuthenticatedLayout({ header, children }) {
 
                             <div className="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
                                 <NavLink
-                                    href={route('dashboard')}
-                                    active={route().current('dashboard')}
+                                    href={route('payment-requests.index')}
+                                    active={route().current(
+                                        'payment-requests.index',
+                                    )}
                                 >
-                                    Dashboard
+                                    {isFinance ? 'Review queue' : 'My requests'}
                                 </NavLink>
+                                {!isFinance && (
+                                    <NavLink
+                                        href={route('payment-requests.create')}
+                                        active={route().current(
+                                            'payment-requests.create',
+                                        )}
+                                    >
+                                        New request
+                                    </NavLink>
+                                )}
                             </div>
                         </div>
 
                         <div className="hidden sm:ms-6 sm:flex sm:items-center">
+                            <span className="me-3 inline-flex items-center rounded-full bg-indigo-50 px-2.5 py-0.5 text-xs font-semibold capitalize text-indigo-700 ring-1 ring-inset ring-indigo-600/20">
+                                {user.role}
+                            </span>
                             <div className="relative ms-3">
                                 <Dropdown>
                                     <Dropdown.Trigger>
@@ -129,11 +146,21 @@ export default function AuthenticatedLayout({ header, children }) {
                 >
                     <div className="space-y-1 pb-3 pt-2">
                         <ResponsiveNavLink
-                            href={route('dashboard')}
-                            active={route().current('dashboard')}
+                            href={route('payment-requests.index')}
+                            active={route().current('payment-requests.index')}
                         >
-                            Dashboard
+                            {isFinance ? 'Review queue' : 'My requests'}
                         </ResponsiveNavLink>
+                        {!isFinance && (
+                            <ResponsiveNavLink
+                                href={route('payment-requests.create')}
+                                active={route().current(
+                                    'payment-requests.create',
+                                )}
+                            >
+                                New request
+                            </ResponsiveNavLink>
+                        )}
                     </div>
 
                     <div className="border-t border-gray-200 pb-1 pt-4">
@@ -169,6 +196,8 @@ export default function AuthenticatedLayout({ header, children }) {
                     </div>
                 </header>
             )}
+
+            <FlashMessages />
 
             <main>{children}</main>
         </div>

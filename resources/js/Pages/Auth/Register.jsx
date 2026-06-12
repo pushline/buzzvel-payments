@@ -1,11 +1,12 @@
 import InputError from '@/Components/InputError';
 import InputLabel from '@/Components/InputLabel';
 import PrimaryButton from '@/Components/PrimaryButton';
+import SelectInput from '@/Components/SelectInput';
 import TextInput from '@/Components/TextInput';
 import GuestLayout from '@/Layouts/GuestLayout';
 import { Head, Link, useForm } from '@inertiajs/react';
 
-export default function Register() {
+export default function Register({ currencies = [] }) {
     const { data, setData, post, processing, errors, reset } = useForm({
         name: '',
         email: '',
@@ -81,15 +82,23 @@ export default function Register() {
                 <div className="mt-4">
                     <InputLabel htmlFor="currency_code" value="Local currency" />
 
-                    <TextInput
+                    <SelectInput
                         id="currency_code"
                         name="currency_code"
                         value={data.currency_code}
-                        className="mt-1 block w-full uppercase"
-                        maxLength={3}
+                        className="mt-1 block w-full"
                         onChange={(e) => setData('currency_code', e.target.value)}
                         required
-                    />
+                    >
+                        <option value="" disabled>
+                            Select your currency
+                        </option>
+                        {currencies.map((code) => (
+                            <option key={code} value={code}>
+                                {code}
+                            </option>
+                        ))}
+                    </SelectInput>
 
                     <InputError message={errors.currency_code} className="mt-2" />
                 </div>
