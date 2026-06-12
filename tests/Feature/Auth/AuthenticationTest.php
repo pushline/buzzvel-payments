@@ -4,6 +4,7 @@ namespace Tests\Feature\Auth;
 
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Auth;
 use Tests\TestCase;
 
 class AuthenticationTest extends TestCase
@@ -40,6 +41,34 @@ class AuthenticationTest extends TestCase
         ]);
 
         $this->assertGuest();
+    }
+
+    public function test_users_can_request_a_persistent_login(): void
+    {
+        $user = User::factory()->create(['remember_token' => null]);
+
+        $response = $this->post('/login', [
+            'email' => $user->email,
+            'password' => 'password',
+            'remember' => true,
+        ]);
+
+        $response->assertCookie(Auth::guard('web')->getRecallerName());
+        $this->assertNotNull($user->fresh()->remember_token);
+    }
+
+    public function test_normal_login_does_not_create_a_persistent_login(): void
+    {
+        $user = User::factory()->create(['remember_token' => null]);
+
+        $response = $this->post('/login', [
+            'email' => $user->email,
+            'password' => 'password',
+            'remember' => false,
+        ]);
+
+        $response->assertCookieMissing(Auth::guard('web')->getRecallerName());
+        $this->assertNull($user->fresh()->remember_token);
     }
 
     public function test_users_can_logout(): void
