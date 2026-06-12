@@ -21,17 +21,24 @@ export default function Create({ currency }) {
     return (
         <AuthenticatedLayout
             header={
-                <h2 className="text-xl font-semibold leading-tight text-gray-800">
-                    New payment request
-                </h2>
+                <div>
+                    <p className="eyebrow">Employee request</p>
+                    <h1 className="mt-2 text-2xl font-bold tracking-tight text-slate-950">
+                        New payment request
+                    </h1>
+                    <p className="mt-2 text-sm text-slate-600">
+                        Submit the local amount and business purpose for finance
+                        review.
+                    </p>
+                </div>
             }
         >
             <Head title="New payment request" />
 
             <div className="py-8">
                 <div className="mx-auto max-w-2xl px-4 sm:px-6 lg:px-8">
-                    <div className="overflow-hidden rounded-lg bg-white shadow-sm">
-                        <div className="border-b border-gray-100 bg-indigo-50/60 px-6 py-4">
+                    <div className="surface overflow-hidden">
+                        <div className="border-b border-blue-100 bg-blue-50/70 px-6 py-5">
                             <p className="text-sm text-gray-600">
                                 Amounts are submitted in your local currency,{' '}
                                 <span className="font-semibold text-gray-900">
@@ -84,23 +91,23 @@ export default function Create({ currency }) {
                                     }
                                     aria-invalid={Boolean(errors.purpose)}
                                     required
-                                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+                                    className="mt-1 block w-full rounded-lg border-slate-300 shadow-none focus:border-blue-700 focus:ring-blue-700"
                                     placeholder="What is this payment for?"
                                 />
                                 <InputError message={errors.purpose} className="mt-2" />
                             </div>
 
-                            <div className="flex items-center justify-end gap-3 border-t border-gray-100 pt-5">
+                            <div className="flex items-center justify-end gap-3 border-t border-slate-200 pt-5">
                                 <Link
                                     href={route('payment-requests.index')}
-                                    className="text-sm font-medium text-gray-600 hover:text-gray-900"
+                                    className="rounded-lg px-4 py-2.5 text-sm font-semibold text-slate-600 hover:bg-slate-100 hover:text-slate-950"
                                 >
                                     Cancel
                                 </Link>
                                 <button
                                     type="submit"
                                     disabled={processing}
-                                    className="inline-flex items-center rounded-md bg-indigo-600 px-4 py-2 text-sm font-semibold text-white shadow-sm transition hover:bg-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-60"
+                                    className="inline-flex items-center rounded-lg bg-blue-700 px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-blue-800 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-700 disabled:cursor-not-allowed disabled:opacity-50"
                                 >
                                     {processing ? 'Submitting…' : 'Submit request'}
                                 </button>

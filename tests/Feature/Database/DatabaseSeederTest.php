@@ -66,4 +66,13 @@ class DatabaseSeederTest extends TestCase
         $this->assertDatabaseCount('users', 6);
         $this->assertDatabaseCount('payment_requests', 5);
     }
+
+    public function test_seeding_can_be_repeated_without_resetting_the_database(): void
+    {
+        $this->seed(DatabaseSeeder::class);
+        $this->seed(DatabaseSeeder::class);
+
+        $this->assertDatabaseCount('users', 6);
+        $this->assertDatabaseCount('payment_requests', 5);
+    }
 }

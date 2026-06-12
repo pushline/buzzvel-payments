@@ -25,10 +25,25 @@ export default function Register({ currencies = [] }) {
     };
 
     return (
-        <GuestLayout>
+        <GuestLayout
+            action={{
+                href: route('login'),
+                label: 'Log in',
+            }}
+        >
             <Head title="Register" />
+            <div className="mb-7">
+                <p className="eyebrow">Employee access</p>
+                <h1 className="mt-2 text-2xl font-bold tracking-tight text-slate-950">
+                    Create your BuzzPay account
+                </h1>
+                <p className="mt-2 text-sm leading-6 text-slate-600">
+                    Your country and local currency determine how requests are
+                    submitted.
+                </p>
+            </div>
 
-            <form onSubmit={submit}>
+            <form onSubmit={submit} className="space-y-5">
                 <div>
                     <InputLabel htmlFor="name" value="Name" />
 
@@ -46,7 +61,7 @@ export default function Register({ currencies = [] }) {
                     <InputError message={errors.name} className="mt-2" />
                 </div>
 
-                <div className="mt-4">
+                <div>
                     <InputLabel htmlFor="email" value="Email" />
 
                     <TextInput
@@ -63,7 +78,7 @@ export default function Register({ currencies = [] }) {
                     <InputError message={errors.email} className="mt-2" />
                 </div>
 
-                <div className="mt-4">
+                <div>
                     <InputLabel htmlFor="country_code" value="Country code" />
 
                     <TextInput
@@ -79,7 +94,7 @@ export default function Register({ currencies = [] }) {
                     <InputError message={errors.country_code} className="mt-2" />
                 </div>
 
-                <div className="mt-4">
+                <div>
                     <InputLabel htmlFor="currency_code" value="Local currency" />
 
                     <SelectInput
@@ -103,7 +118,7 @@ export default function Register({ currencies = [] }) {
                     <InputError message={errors.currency_code} className="mt-2" />
                 </div>
 
-                <div className="mt-4">
+                <div>
                     <InputLabel htmlFor="password" value="Password" />
 
                     <TextInput
@@ -120,7 +135,7 @@ export default function Register({ currencies = [] }) {
                     <InputError message={errors.password} className="mt-2" />
                 </div>
 
-                <div className="mt-4">
+                <div>
                     <InputLabel
                         htmlFor="password_confirmation"
                         value="Confirm Password"
@@ -145,15 +160,15 @@ export default function Register({ currencies = [] }) {
                     />
                 </div>
 
-                <div className="mt-4 flex items-center justify-end">
+                <div className="flex flex-col-reverse gap-4 pt-2 sm:flex-row sm:items-center sm:justify-between">
                     <Link
                         href={route('login')}
-                        className="rounded-md text-sm text-gray-600 underline hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+                        className="text-sm font-semibold text-slate-600 hover:text-blue-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-700"
                     >
                         Already registered?
                     </Link>
 
-                    <PrimaryButton className="ms-4" disabled={processing}>
+                    <PrimaryButton disabled={processing}>
                         Register
                     </PrimaryButton>
                 </div>

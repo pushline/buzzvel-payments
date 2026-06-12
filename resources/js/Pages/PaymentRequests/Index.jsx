@@ -12,11 +12,11 @@ const STATUS_TABS = [
 ];
 
 const SUMMARY_CARDS = [
-    { key: 'total', label: 'Total', accent: 'text-gray-900' },
+    { key: 'total', label: 'Total', accent: 'text-slate-950' },
     { key: 'pending', label: 'Pending', accent: 'text-amber-600' },
     { key: 'approved', label: 'Approved', accent: 'text-emerald-600' },
     { key: 'rejected', label: 'Rejected', accent: 'text-rose-600' },
-    { key: 'expired', label: 'Expired', accent: 'text-gray-500' },
+    { key: 'expired', label: 'Expired', accent: 'text-slate-500' },
 ];
 
 function applyFilter(status) {
@@ -36,10 +36,11 @@ export default function Index({ paymentRequests, summary, filters, can }) {
             header={
                 <div className="flex flex-wrap items-center justify-between gap-3">
                     <div>
-                        <h2 className="text-xl font-semibold leading-tight text-gray-800">
+                        <p className="eyebrow">{isFinance ? 'Finance workspace' : 'Employee workspace'}</p>
+                        <h1 className="mt-2 text-2xl font-bold leading-tight tracking-tight text-slate-950">
                             {isFinance ? 'Review queue' : 'My payment requests'}
-                        </h2>
-                        <p className="mt-1 text-sm text-gray-500">
+                        </h1>
+                        <p className="mt-2 text-sm text-slate-600">
                             {isFinance
                                 ? 'All payment requests across the company.'
                                 : 'Track the status of every request you submit.'}
@@ -48,7 +49,7 @@ export default function Index({ paymentRequests, summary, filters, can }) {
                     {can.create && (
                         <Link
                             href={route('payment-requests.create')}
-                            className="inline-flex items-center rounded-md bg-indigo-600 px-4 py-2 text-sm font-semibold text-white shadow-sm transition hover:bg-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+                            className="inline-flex items-center rounded-lg bg-blue-700 px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-blue-800 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-700 focus-visible:ring-offset-2"
                         >
                             New request
                         </Link>
@@ -62,11 +63,8 @@ export default function Index({ paymentRequests, summary, filters, can }) {
                 <div className="mx-auto max-w-7xl space-y-6 px-4 sm:px-6 lg:px-8">
                     <dl className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-5">
                         {SUMMARY_CARDS.map((card) => (
-                            <div
-                                key={card.key}
-                                className="rounded-lg border border-gray-100 bg-white px-4 py-5 shadow-sm"
-                            >
-                                <dt className="text-sm font-medium text-gray-500">
+                            <div key={card.key} className="surface px-4 py-5">
+                                <dt className="text-xs font-semibold uppercase tracking-wider text-slate-500">
                                     {card.label}
                                 </dt>
                                 <dd
@@ -78,8 +76,8 @@ export default function Index({ paymentRequests, summary, filters, can }) {
                         ))}
                     </dl>
 
-                    <div className="overflow-hidden rounded-lg bg-white shadow-sm">
-                        <div className="flex flex-wrap gap-2 border-b border-gray-100 px-4 py-3">
+                    <div className="surface overflow-hidden">
+                        <div className="flex flex-wrap gap-2 border-b border-slate-200 px-4 py-3">
                             {STATUS_TABS.map((tab) => {
                                 const active = activeStatus === tab.value;
 
@@ -89,10 +87,10 @@ export default function Index({ paymentRequests, summary, filters, can }) {
                                         type="button"
                                         onClick={() => applyFilter(tab.value)}
                                         aria-pressed={active}
-                                        className={`rounded-full px-3 py-1 text-sm font-medium transition focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-1 ${
+                                        className={`rounded-lg px-3 py-1.5 text-sm font-semibold transition focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-700 ${
                                             active
-                                                ? 'bg-indigo-600 text-white'
-                                                : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                                                ? 'bg-slate-950 text-white'
+                                                : 'text-slate-600 hover:bg-slate-100'
                                         }`}
                                     >
                                         {tab.label}
@@ -123,8 +121,8 @@ export default function Index({ paymentRequests, summary, filters, can }) {
 function RequestTable({ requests, showRequester }) {
     return (
         <div className="overflow-x-auto">
-            <table className="min-w-full divide-y divide-gray-100 text-sm">
-                <thead className="bg-gray-50 text-left text-xs uppercase tracking-wide text-gray-500">
+            <table className="min-w-full divide-y divide-slate-200 text-sm">
+                <thead className="bg-slate-50 text-left text-xs uppercase tracking-wide text-slate-500">
                     <tr>
                         {showRequester && <th className="px-4 py-3">Requester</th>}
                         <th className="px-4 py-3">Purpose</th>
@@ -137,9 +135,12 @@ function RequestTable({ requests, showRequester }) {
                         </th>
                     </tr>
                 </thead>
-                <tbody className="divide-y divide-gray-100">
+                <tbody className="divide-y divide-slate-100">
                     {requests.map((request) => (
-                        <tr key={request.id} className="hover:bg-gray-50">
+                        <tr
+                            key={request.id}
+                            className="transition hover:bg-blue-50/40"
+                        >
                             {showRequester && (
                                 <td className="px-4 py-3">
                                     <div className="font-medium text-gray-900">
@@ -155,13 +156,13 @@ function RequestTable({ requests, showRequester }) {
                                     {request.purpose}
                                 </span>
                             </td>
-                            <td className="whitespace-nowrap px-4 py-3 font-medium text-gray-900">
+                            <td className="money whitespace-nowrap px-4 py-3 font-semibold text-slate-950">
                                 {formatMoney(
                                     request.local_amount,
                                     request.local_currency,
                                 )}
                             </td>
-                            <td className="whitespace-nowrap px-4 py-3 text-gray-700">
+                            <td className="money whitespace-nowrap px-4 py-3 text-slate-700">
                                 {formatEur(request.eur_amount)}
                             </td>
                             <td className="px-4 py-3">
@@ -176,7 +177,7 @@ function RequestTable({ requests, showRequester }) {
                                         'payment-requests.show',
                                         request.id,
                                     )}
-                                    className="font-medium text-indigo-600 hover:text-indigo-500"
+                                    className="font-semibold text-blue-700 hover:text-blue-900"
                                 >
                                     View
                                 </Link>
@@ -192,9 +193,20 @@ function RequestTable({ requests, showRequester }) {
 function EmptyState({ isFinance, filtered, canCreate }) {
     return (
         <div className="flex flex-col items-center justify-center px-6 py-16 text-center">
-            <div className="flex h-12 w-12 items-center justify-center rounded-full bg-indigo-50 text-indigo-600">
-                <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" aria-hidden="true">
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5.586a1 1 0 0 1 .707.293l5.414 5.414a1 1 0 0 1 .293.707V19a2 2 0 0 1-2 2Z" />
+            <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-blue-50 text-blue-700 ring-1 ring-inset ring-blue-100">
+                <svg
+                    className="h-6 w-6"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    strokeWidth="1.5"
+                    stroke="currentColor"
+                    aria-hidden="true"
+                >
+                    <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="M9 12h6m-6 4h6m2 5H7a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5.586a1 1 0 0 1 .707.293l5.414 5.414a1 1 0 0 1 .293.707V19a2 2 0 0 1-2 2Z"
+                    />
                 </svg>
             </div>
             <h3 className="mt-4 text-base font-semibold text-gray-900">
@@ -214,7 +226,7 @@ function EmptyState({ isFinance, filtered, canCreate }) {
             {canCreate && !filtered && (
                 <Link
                     href={route('payment-requests.create')}
-                    className="mt-6 inline-flex items-center rounded-md bg-indigo-600 px-4 py-2 text-sm font-semibold text-white shadow-sm transition hover:bg-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+                    className="mt-6 inline-flex items-center rounded-lg bg-blue-700 px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-blue-800 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-700"
                 >
                     Create a request
                 </Link>

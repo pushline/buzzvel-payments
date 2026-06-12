@@ -9,7 +9,7 @@ export default forwardRef(function SelectInput(
             {...props}
             ref={ref}
             className={
-                'rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 ' +
+                'rounded-lg border-slate-300 bg-white text-slate-950 shadow-none focus:border-blue-700 focus:ring-blue-700 ' +
                 className
             }
         >
