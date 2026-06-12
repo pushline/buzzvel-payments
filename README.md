@@ -1,66 +1,189 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# BuzzPay
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+BuzzPay is a Laravel 12 application for managing multi-currency payment
+requests. Employees submit requests in their assigned local currency. BuzzPay
+fetches and permanently stores the EUR conversion rate, while finance users
+review every request from a shared queue.
 
-## About Laravel
+The repository includes a REST API authenticated with Laravel Sanctum and a
+responsive React/Inertia demonstration interface.
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## Features
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+- Employee registration, login, logout, and Sanctum API tokens.
+- Employee and finance roles with policy-based authorization.
+- Multi-currency requests converted from local currency to EUR.
+- Immutable exchange-rate value, source, and provider timestamp.
+- Finance-only approval and rejection of pending requests.
+- Status filtering for `pending`, `approved`, `rejected`, and `expired`.
+- Hourly expiration of requests pending for more than 48 hours.
+- Repeatable international demo data.
+- Consistent JSON errors and extensive automated coverage.
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+## Requirements
 
-## Learning Laravel
+- PHP 8.2 or newer with `bcmath`, `pdo_sqlite`, and `sqlite3`.
+- Composer.
+- Node.js and npm.
+- An [ExchangeRate-API](https://www.exchangerate-api.com/) API key for creating
+  requests against the live provider.
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+## Setup
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+```powershell
+git clone <repository-url>
+cd buzzvel-laravel
+composer install
+npm install
+Copy-Item .env.example .env
+php artisan key:generate
+php artisan migrate:fresh --seed
+npm run build
+```
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+Add a provider key to `.env`:
 
-## Laravel Sponsors
+```dotenv
+EXCHANGE_RATE_API_KEY=your-key-here
+```
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+Start the application:
 
-### Premium Partners
+```powershell
+composer run dev
+```
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[WebReinvent](https://webreinvent.com/)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Jump24](https://jump24.co.uk)**
-- **[Redberry](https://redberry.international/laravel/)**
-- **[Active Logic](https://activelogic.com)**
-- **[byte5](https://byte5.de)**
-- **[OP.GG](https://op.gg)**
+Then open `http://127.0.0.1:8000`.
 
-## Contributing
+The Composer development command starts the Laravel server, queue listener, and
+Vite server. It intentionally does not start Laravel Pail because Pail requires
+the unavailable Windows `pcntl` extension.
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+## Environment
 
-## Code of Conduct
+| Variable | Default | Purpose |
+| --- | --- | --- |
+| `APP_URL` | `http://localhost` | Public application URL. |
+| `DB_CONNECTION` | `sqlite` | Database connection. |
+| `QUEUE_CONNECTION` | `database` | Queue backend used by the development command. |
+| `EXCHANGE_RATE_API_BASE_URL` | `https://v6.exchangerate-api.com` | Provider base URL. |
+| `EXCHANGE_RATE_API_KEY` | empty | Required for live payment-request creation. |
+| `EXCHANGE_RATE_API_TIMEOUT` | `10` | Provider request timeout in seconds. |
+| `EXCHANGE_RATE_API_SOURCE` | `ExchangeRate-API` | Source label stored with requests. |
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+Never commit `.env` or provider credentials. Automated tests fake the exchange
+rate provider and do not require an API key.
 
-## Security Vulnerabilities
+## Demo Accounts
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+Run `php artisan db:seed` at any time to refresh the deterministic demo records.
+The seeder is idempotent and preserves unrelated local records.
 
-## License
+All demo users use the password `password`.
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+| Role | Email | Country | Currency |
+| --- | --- | --- | --- |
+| Finance | `finance@example.com` | Portugal | EUR |
+| Employee | `ana@example.com` | Brazil | BRL |
+| Employee | `james@example.com` | United Kingdom | GBP |
+| Employee | `sofia@example.com` | Mexico | MXN |
+| Employee | `haruto@example.com` | Japan | JPY |
+| Employee | `priya@example.com` | India | INR |
+
+The seeded requests cover every payment status.
+
+## Scheduler
+
+BuzzPay schedules `payments:expire-pending` hourly without overlapping. It
+expires only pending requests created more than 48 hours ago.
+
+Run the command manually:
+
+```powershell
+php artisan payments:expire-pending
+```
+
+Run the scheduler locally:
+
+```powershell
+php artisan schedule:work
+```
+
+Production should invoke Laravel's scheduler every minute:
+
+```cron
+* * * * * cd /path/to/buzzpay && php artisan schedule:run >> /dev/null 2>&1
+```
+
+## Verification
+
+```powershell
+php artisan migrate:fresh --seed
+php artisan test
+vendor/bin/pint --test
+npm run build
+composer audit --no-interaction
+npm audit --audit-level=high
+php artisan route:list --path=api
+php artisan schedule:list
+```
+
+Generate favicons after changing `public/favicon.svg`:
+
+```powershell
+npm run favicons
+```
+
+No frontend linter or PHP static analyzer is configured. PHPUnit, Pint,
+dependency audits, and the production frontend build are the configured quality
+checks.
+
+## Architecture
+
+- **Authentication:** Sanctum personal access tokens protect the API; the
+  Inertia demonstration UI uses Laravel's web session authentication.
+- **Domain rules:** enums define roles and payment statuses, policies control
+  visibility/review permissions, and actions own creation/review transactions.
+- **Exchange rates:** application code depends on `ExchangeRateProvider`.
+  `ExchangeRateApiProvider` is the production adapter and tests replace it with
+  fakes.
+- **Money precision:** local and EUR amounts use `DECIMAL(18,4)`, rates use
+  `DECIMAL(20,10)`, and conversion uses BCMath rather than floating point.
+- **Conversion:** EUR amount equals `local_amount / EUR_to_local_rate`, rounded
+  half-up to four decimal places.
+- **Immutability:** request creation accepts only `amount` and `purpose`.
+  Currency, conversion, and provider metadata are derived server-side, and no
+  general update/delete API exists.
+- **Review concurrency:** finance review locks the request row inside a
+  transaction and allows transitions only from `pending`.
+- **Expiration:** an idempotent chunked command expires eligible pending
+  requests.
+
+## Authorization
+
+- Public registration always creates an employee.
+- Employees create requests and access only their own requests.
+- Finance users are created through seeders and access all requests.
+- Only finance users can approve or reject pending requests.
+
+## API Documentation
+
+See [docs/API.md](docs/API.md) for every endpoint, parameters, examples, and
+error responses.
+
+All protected requests require:
+
+```http
+Authorization: Bearer <token>
+Accept: application/json
+```
+
+See [docs/QUALITY_REVIEW.md](docs/QUALITY_REVIEW.md) for the final
+requirement-to-test matrix and manual review checklist.
+
+## Known Limitations
+
+- The API list endpoint returns all visible requests and is not paginated.
+- Supported registration currencies come from `config/payments.php`.
+- Finance accounts are intentionally not created through public registration.
+- A hosted URL or recorded video must be produced outside this repository.

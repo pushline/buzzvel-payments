@@ -1,6 +1,7 @@
 # Demo Accounts
 
-These accounts are created only by `php artisan migrate:fresh --seed`.
+These accounts are created by `php artisan migrate:fresh --seed` or refreshed
+with the idempotent `php artisan db:seed` command.
 All demo accounts use the password `password`.
 
 ## Finance

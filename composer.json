@@ -1,9 +1,15 @@
 {
     "$schema": "https://getcomposer.org/schema.json",
-    "name": "laravel/laravel",
+    "name": "pushline/buzzpay",
     "type": "project",
-    "description": "The skeleton application for the Laravel framework.",
-    "keywords": ["laravel", "framework"],
+    "description": "Multi-currency payment request and finance review application.",
+    "keywords": [
+        "laravel",
+        "payments",
+        "exchange-rates",
+        "inertia",
+        "react"
+    ],
     "license": "MIT",
     "require": {
         "ext-bcmath": "*",
