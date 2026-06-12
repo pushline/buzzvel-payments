@@ -14,7 +14,7 @@ export default function Welcome({ auth }) {
         <>
             <Head title="Multi-currency payment request management" />
 
-            <div className="min-h-screen bg-[#f6f7f9] text-slate-950">
+            <div className="min-h-screen bg-[#f6f7f9] text-slate-950 dark:bg-slate-950 dark:text-slate-100">
                 <MarketingHeader user={auth.user} />
 
                 <main>

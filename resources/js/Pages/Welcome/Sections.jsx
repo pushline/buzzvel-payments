@@ -1,4 +1,5 @@
 import ApplicationLogo from '@/Components/ApplicationLogo';
+import ThemeToggle from '@/Components/ThemeToggle';
 import { Link } from '@inertiajs/react';
 
 const WORKFLOW_STEPS = [
@@ -91,13 +92,17 @@ function Brand({ compact = false }) {
 
 export function MarketingHeader({ user }) {
     return (
-        <header className="sticky top-0 z-20 border-b border-slate-200/90 bg-white/95">
+        <header className="sticky top-0 z-20 border-b border-slate-200/90 bg-white/95 dark:border-slate-800 dark:bg-slate-950/95">
             <nav
                 className="mx-auto flex max-w-7xl items-center justify-between px-5 py-4 sm:px-8"
                 aria-label="Main navigation"
             >
                 <Link
-                    href="/"
+                    href={
+                        user
+                            ? route('payment-requests.index')
+                            : '/'
+                    }
                     className="rounded-lg focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-700"
                 >
                     <Brand />
@@ -116,6 +121,7 @@ export function MarketingHeader({ user }) {
                 </div>
 
                 <div className="flex items-center gap-2">
+                    <ThemeToggle />
                     {user ? (
                         <Link href={route('dashboard')} className="dark-button">
                             Open dashboard
@@ -150,7 +156,7 @@ export function HeroSection() {
     ];
 
     return (
-        <section className="overflow-hidden border-b border-slate-200 bg-white">
+        <section className="overflow-hidden border-b border-slate-200 bg-white dark:border-slate-800 dark:bg-slate-950">
             <div className="mx-auto max-w-7xl px-5 pb-16 pt-14 sm:px-8 sm:pb-24 sm:pt-20">
                 <div className="grid gap-12 lg:grid-cols-[1.05fr_.95fr] lg:items-center">
                     <div className="max-w-3xl">
@@ -248,7 +254,7 @@ function PaymentRequestPreview() {
                     </div>
 
                     <div className="mt-5 divide-y divide-slate-100 rounded-lg border border-slate-200 px-4">
-                        <PreviewRow label="Locked rate" value="1 EUR = 5.978700 BRL" />
+                        <PreviewRow label="Locked rate" value="1 EUR = 5.978572 BRL" />
                         <PreviewRow label="Rate provider" value="ExchangeRate-API" />
                         <PreviewRow label="Review deadline" value="Within 48 hours" />
                     </div>
@@ -272,13 +278,15 @@ function PreviewAmount({ label, amount, note, highlighted = false }) {
         <div
             className={`rounded-lg border p-4 ${
                 highlighted
-                    ? 'border-blue-200 bg-blue-50 text-blue-950'
-                    : 'border-slate-200'
+                    ? 'border-blue-200 bg-blue-50 text-blue-950 dark:border-blue-700 dark:bg-blue-950 dark:text-white'
+                    : 'border-slate-200 dark:border-slate-700'
             }`}
         >
             <p
                 className={`text-xs font-semibold uppercase tracking-wider ${
-                    highlighted ? 'text-blue-700' : 'text-slate-500'
+                    highlighted
+                        ? 'text-blue-700 dark:text-blue-300'
+                        : 'text-slate-500'
                 }`}
             >
                 {label}
@@ -286,7 +294,9 @@ function PreviewAmount({ label, amount, note, highlighted = false }) {
             <p className="money mt-2 text-xl font-bold">{amount}</p>
             <p
                 className={`mt-1 text-xs ${
-                    highlighted ? 'text-blue-700' : 'text-slate-500'
+                    highlighted
+                        ? 'text-blue-700 dark:text-blue-300'
+                        : 'text-slate-500'
                 }`}
             >
                 {note}
@@ -308,28 +318,30 @@ export function ProductSection() {
     return (
         <section
             id="product"
-            className="mx-auto max-w-7xl px-5 py-16 sm:px-8 sm:py-24"
+            className="dark:bg-slate-900"
         >
-            <div className="grid gap-10 lg:grid-cols-[.8fr_1.2fr] lg:gap-20">
-                <div>
-                    <p className="eyebrow">What BuzzPay is</p>
-                    <h2 className="mt-4 text-3xl font-bold leading-tight tracking-[-0.035em] sm:text-4xl">
-                        A shared language between employees and finance.
-                    </h2>
-                </div>
+            <div className="mx-auto max-w-7xl px-5 py-16 sm:px-8 sm:py-24">
+                <div className="grid gap-10 lg:grid-cols-[.8fr_1.2fr] lg:gap-20">
+                    <div>
+                        <p className="eyebrow">What BuzzPay is</p>
+                        <h2 className="mt-4 text-3xl font-bold leading-tight tracking-[-0.035em] sm:text-4xl">
+                            A shared language between employees and finance.
+                        </h2>
+                    </div>
 
-                <div className="grid gap-8 sm:grid-cols-2">
-                    <RoleDescription
-                        role="For employees"
-                        title="Request without converting manually."
-                        copy="Submit the real local amount and explain its purpose. BuzzPay handles the EUR calculation and keeps you informed as finance reviews it."
-                        accent="blue"
-                    />
-                    <RoleDescription
-                        role="For finance"
-                        title="Compare and decide consistently."
-                        copy="Review requests from every country in one queue, with local context, normalized EUR values, and immutable rate evidence."
-                    />
+                    <div className="grid gap-8 sm:grid-cols-2">
+                        <RoleDescription
+                            role="For employees"
+                            title="Request without converting manually."
+                            copy="Submit the real local amount and explain its purpose. BuzzPay handles the EUR calculation and keeps you informed as finance reviews it."
+                            accent="blue"
+                        />
+                        <RoleDescription
+                            role="For finance"
+                            title="Compare and decide consistently."
+                            copy="Review requests from every country in one queue, with local context, normalized EUR values, and immutable rate evidence."
+                        />
+                    </div>
                 </div>
             </div>
         </section>
@@ -340,7 +352,7 @@ function RoleDescription({ role, title, copy, accent = 'slate' }) {
     const accentClasses =
         accent === 'blue'
             ? 'border-blue-700 text-blue-700'
-            : 'border-slate-950 text-slate-950';
+            : 'border-slate-950 text-slate-950 dark:border-[#f1f5f9] dark:text-slate-100';
 
     return (
         <article className={`border-t-2 pt-5 ${accentClasses}`}>
@@ -357,11 +369,11 @@ export function WorkflowSection() {
     return (
         <section
             id="workflow"
-            className="border-y border-slate-200 bg-slate-950 text-white"
+            className="border-y border-slate-200 bg-white text-slate-950 dark:border-slate-800 dark:bg-slate-950 dark:text-white"
         >
             <div className="mx-auto max-w-7xl px-5 py-16 sm:px-8 sm:py-24">
                 <div className="max-w-2xl">
-                    <p className="text-xs font-bold uppercase tracking-[0.16em] text-blue-300">
+                    <p className="text-xs font-bold uppercase tracking-[0.16em] text-blue-700 dark:text-blue-300">
                         One traceable workflow
                     </p>
                     <h2 className="mt-4 text-3xl font-bold tracking-[-0.035em] sm:text-4xl">
@@ -369,19 +381,19 @@ export function WorkflowSection() {
                     </h2>
                 </div>
 
-                <div className="mt-12 grid gap-px overflow-hidden rounded-xl border border-slate-700 bg-slate-700 lg:grid-cols-3">
+                <div className="mt-12 grid gap-px overflow-hidden rounded-xl border border-slate-200 bg-slate-200 dark:border-slate-700 dark:bg-slate-700 lg:grid-cols-3">
                     {WORKFLOW_STEPS.map((step) => (
                         <article
                             key={step.number}
-                            className="bg-slate-950 p-6 sm:p-8"
+                            className="bg-slate-50 p-6 dark:bg-slate-950 sm:p-8"
                         >
-                            <p className="money text-sm font-bold text-blue-300">
+                            <p className="money text-sm font-bold text-blue-700 dark:text-blue-300">
                                 {step.number}
                             </p>
                             <h3 className="mt-6 text-xl font-bold">
                                 {step.title}
                             </h3>
-                            <p className="mt-3 text-sm leading-6 text-slate-400">
+                            <p className="mt-3 text-sm leading-6 text-slate-600 dark:text-slate-400">
                                 {step.copy}
                             </p>
                         </article>
@@ -396,33 +408,35 @@ export function ControlsSection() {
     return (
         <section
             id="controls"
-            className="mx-auto max-w-7xl px-5 py-16 sm:px-8 sm:py-24"
+            className="dark:bg-slate-900"
         >
-            <div className="surface grid overflow-hidden lg:grid-cols-[.9fr_1.1fr]">
-                <div className="border-b border-slate-200 bg-blue-50 p-7 sm:p-10 lg:border-b-0 lg:border-r">
-                    <p className="eyebrow">Designed for control</p>
-                    <h2 className="mt-4 text-3xl font-bold tracking-[-0.035em]">
-                        The conversion cannot quietly change later.
-                    </h2>
-                    <p className="mt-5 text-sm leading-7 text-slate-600">
-                        Every request becomes an auditable snapshot: amount,
-                        currency, EUR conversion, applied rate, source, and
-                        provider timestamp.
-                    </p>
-                </div>
+            <div className="mx-auto max-w-7xl px-5 py-16 sm:px-8 sm:py-24">
+                <div className="surface grid overflow-hidden dark:border-slate-700 lg:grid-cols-[.9fr_1.1fr]">
+                    <div className="border-b border-slate-200 bg-blue-50 p-7 dark:border-slate-700 dark:bg-slate-800 sm:p-10 lg:border-b-0 lg:border-r dark:lg:border-slate-700">
+                        <p className="eyebrow">Designed for control</p>
+                        <h2 className="mt-4 text-3xl font-bold tracking-[-0.035em]">
+                            The conversion cannot quietly change later.
+                        </h2>
+                        <p className="mt-5 text-sm leading-7 text-slate-600">
+                            Every request becomes an auditable snapshot: amount,
+                            currency, EUR conversion, applied rate, source, and
+                            provider timestamp.
+                        </p>
+                    </div>
 
-                <div className="grid gap-px bg-slate-200 sm:grid-cols-2">
-                    {CONTROL_ITEMS.map((item) => (
-                        <article key={item.title} className="bg-white p-7">
-                            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-blue-50 text-blue-700">
-                                <CheckIcon />
-                            </div>
-                            <h3 className="mt-5 font-bold">{item.title}</h3>
-                            <p className="mt-2 text-sm leading-6 text-slate-600">
-                                {item.copy}
-                            </p>
-                        </article>
-                    ))}
+                    <div className="grid gap-px bg-slate-200 dark:bg-slate-700 sm:grid-cols-2">
+                        {CONTROL_ITEMS.map((item) => (
+                            <article key={item.title} className="bg-white p-7 dark:bg-slate-900">
+                                <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-blue-50 text-blue-700 dark:bg-blue-900 dark:text-blue-200">
+                                    <CheckIcon />
+                                </div>
+                                <h3 className="mt-5 font-bold">{item.title}</h3>
+                                <p className="mt-2 text-sm leading-6 text-slate-600">
+                                    {item.copy}
+                                </p>
+                            </article>
+                        ))}
+                    </div>
                 </div>
             </div>
         </section>
@@ -431,7 +445,7 @@ export function ControlsSection() {
 
 export function CallToAction() {
     return (
-        <section className="border-t border-slate-200 bg-white">
+        <section className="border-t border-slate-200 bg-white dark:border-slate-800 dark:bg-slate-950">
             <div className="mx-auto flex max-w-7xl flex-col gap-7 px-5 py-14 sm:px-8 lg:flex-row lg:items-center lg:justify-between">
                 <div>
                     <p className="eyebrow">Ready to request</p>
@@ -461,7 +475,7 @@ export function CallToAction() {
 
 export function MarketingFooter() {
     return (
-        <footer className="border-t border-slate-200 bg-[#f6f7f9]">
+        <footer className="border-t border-slate-200 bg-[#f6f7f9] dark:border-slate-700 dark:bg-slate-900">
             <div className="mx-auto flex max-w-7xl flex-col gap-4 px-5 py-8 text-sm text-slate-500 sm:flex-row sm:items-center sm:justify-between sm:px-8">
                 <Brand compact />
                 <span>

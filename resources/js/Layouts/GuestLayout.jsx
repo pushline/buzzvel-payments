@@ -1,10 +1,11 @@
 import ApplicationLogo from '@/Components/ApplicationLogo';
+import ThemeToggle from '@/Components/ThemeToggle';
 import { Link } from '@inertiajs/react';
 
 export default function GuestLayout({ action, children }) {
     return (
-        <div className="min-h-screen bg-slate-50">
-            <header className="border-b border-slate-200 bg-white">
+        <div className="min-h-screen bg-slate-50 dark:bg-slate-950">
+            <header className="border-b border-slate-200 bg-white dark:border-slate-800 dark:bg-slate-900">
                 <div className="mx-auto flex max-w-7xl items-center justify-between px-5 py-4 sm:px-8">
                     <Link
                         href="/"
@@ -16,6 +17,7 @@ export default function GuestLayout({ action, children }) {
                         </span>
                     </Link>
                     <div className="flex items-center gap-2">
+                        <ThemeToggle />
                         <Link
                             href="/"
                             className="rounded-lg px-3 py-2.5 text-sm font-semibold text-slate-600 transition hover:bg-slate-100 hover:text-blue-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-700"

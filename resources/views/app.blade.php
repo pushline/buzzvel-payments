@@ -15,6 +15,21 @@
         <link rel="manifest" href="/site.webmanifest">
         <meta name="theme-color" content="#1d4ed8">
 
+        <script>
+            (() => {
+                let storedTheme = null;
+
+                try {
+                    storedTheme = localStorage.getItem('theme');
+                } catch {}
+
+                const isDark = storedTheme !== 'light';
+
+                document.documentElement.classList.toggle('dark', isDark);
+                document.documentElement.style.colorScheme = isDark ? 'dark' : 'light';
+            })();
+        </script>
+
         <!-- Fonts -->
         <link rel="preconnect" href="https://fonts.bunny.net">
         <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />

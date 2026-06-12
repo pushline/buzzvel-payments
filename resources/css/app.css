@@ -3,22 +3,37 @@
 @tailwind utilities;
 
 @layer base {
-    html { color-scheme: light; }
-    body { @apply bg-slate-50 text-slate-950 antialiased; }
-    ::selection { @apply bg-blue-700 text-white; }
+    html {
+        color-scheme: light;
+    }
+    html.dark {
+        color-scheme: dark;
+    }
+    body {
+        @apply bg-slate-50 text-slate-950 antialiased transition-colors dark:bg-slate-950 dark:text-slate-100;
+    }
+    ::selection {
+        @apply bg-blue-700 text-white;
+    }
 }
 
 @layer components {
-    .surface { @apply rounded-xl border border-slate-200 bg-white shadow-sm; }
-    .eyebrow { @apply text-xs font-semibold uppercase tracking-[0.16em] text-blue-700; }
-    .money { font-variant-numeric: tabular-nums; }
+    .surface {
+        @apply rounded-xl border border-slate-200 bg-white shadow-sm dark:border-slate-700 dark:bg-slate-900;
+    }
+    .eyebrow {
+        @apply text-xs font-semibold uppercase tracking-[0.16em] text-blue-700 dark:text-blue-400;
+    }
+    .money {
+        font-variant-numeric: tabular-nums;
+    }
 
     .marketing-nav-link {
         @apply text-sm font-semibold text-slate-500 transition hover:text-slate-950;
     }
 
     .dark-button {
-        @apply rounded-lg bg-slate-950 px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-blue-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-700;
+        @apply rounded-lg bg-slate-950 px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-blue-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-700 dark:bg-blue-700 dark:hover:bg-blue-600;
     }
 
     .primary-marketing-button {
@@ -30,8 +45,112 @@
     }
 }
 
+@layer utilities {
+    .dark .bg-white {
+        @apply bg-slate-900;
+    }
+    .dark .bg-slate-50 {
+        @apply bg-slate-950;
+    }
+    .dark .bg-slate-100 {
+        @apply bg-slate-800;
+    }
+    .dark .bg-blue-50 {
+        @apply bg-blue-950;
+    }
+    .dark .bg-blue-50\/70 {
+        @apply bg-blue-950/70;
+    }
+    .dark .bg-amber-50 {
+        @apply bg-amber-950;
+    }
+    .dark .bg-emerald-50 {
+        @apply bg-emerald-950;
+    }
+    .dark .bg-rose-50 {
+        @apply bg-rose-950;
+    }
+
+    .dark .text-slate-950,
+    .dark .text-slate-900,
+    .dark .text-gray-900,
+    .dark .text-gray-800 {
+        @apply text-slate-100;
+    }
+    .dark .text-slate-800,
+    .dark .text-slate-700,
+    .dark .text-gray-700 {
+        @apply text-slate-200;
+    }
+    .dark .text-slate-600,
+    .dark .text-slate-500,
+    .dark .text-gray-600,
+    .dark .text-gray-500,
+    .dark .text-gray-400 {
+        @apply text-slate-400;
+    }
+    .dark .text-amber-800 {
+        @apply text-amber-300;
+    }
+    .dark .text-emerald-800 {
+        @apply text-emerald-300;
+    }
+    .dark .text-rose-700,
+    .dark .text-rose-800 {
+        @apply text-rose-300;
+    }
+
+    .dark .border-slate-100,
+    .dark .border-slate-200,
+    .dark .border-slate-300 {
+        @apply border-slate-700;
+    }
+    .dark .border-blue-100,
+    .dark .border-blue-200 {
+        @apply border-blue-800;
+    }
+    .dark .border-rose-200 {
+        @apply border-rose-800;
+    }
+    .dark .divide-slate-100 > :not([hidden]) ~ :not([hidden]),
+    .dark .divide-slate-200 > :not([hidden]) ~ :not([hidden]) {
+        @apply border-slate-700;
+    }
+
+    .dark .ring-slate-200 {
+        @apply ring-slate-700;
+    }
+    .dark .ring-blue-100,
+    .dark .ring-blue-200 {
+        @apply ring-blue-800;
+    }
+    .dark .ring-rose-200 {
+        @apply ring-rose-800;
+    }
+
+    .dark input,
+    .dark select,
+    .dark textarea {
+        @apply border-slate-700 bg-slate-950 text-slate-100;
+    }
+    .dark input::placeholder,
+    .dark textarea::placeholder {
+        color: rgb(100 116 139);
+    }
+
+    .dark .hover\:bg-slate-50:hover,
+    .dark .hover\:bg-slate-100:hover {
+        @apply bg-slate-800;
+    }
+    .dark .hover\:bg-blue-50\/40:hover {
+        @apply bg-blue-950/40;
+    }
+}
+
 @media (prefers-reduced-motion: reduce) {
-    *, *::before, *::after {
+    *,
+    *::before,
+    *::after {
         scroll-behavior: auto !important;
         transition-duration: 0.01ms !important;
         animation-duration: 0.01ms !important;
