@@ -2,7 +2,10 @@
 
 use App\Http\Controllers\PaymentRequestController;
 use App\Http\Controllers\ProfileController;
+use App\Models\User;
+use Illuminate\Auth\Notifications\ResetPassword;
 use Illuminate\Foundation\Application;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -18,6 +21,18 @@ Route::get('/', function () {
 Route::get('/dashboard', fn () => redirect()->route('payment-requests.index'))
     ->middleware(['auth'])
     ->name('dashboard');
+
+if (app()->environment('local')) {
+    Route::get('/dev/mail-preview/password-reset', function (Request $request) {
+        $user = User::query()
+            ->where('email', $request->string('email')->toString())
+            ->firstOrFail();
+
+        return (new ResetPassword($request->string('token', 'preview-token')->toString()))
+            ->toMail($user)
+            ->render();
+    })->name('dev.mail-preview.password-reset');
+}
 
 Route::middleware('auth')->group(function () {
     Route::get('/payment-requests', [PaymentRequestController::class, 'index'])->name('payment-requests.index');
