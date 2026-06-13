@@ -3,6 +3,7 @@
 namespace Tests\Feature\Auth;
 
 use App\Models\User;
+use Illuminate\Auth\SessionGuard;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Auth;
 use Tests\TestCase;
@@ -53,7 +54,10 @@ class AuthenticationTest extends TestCase
             'remember' => true,
         ]);
 
-        $response->assertCookie(Auth::guard('web')->getRecallerName());
+        $guard = Auth::guard('web');
+
+        $this->assertInstanceOf(SessionGuard::class, $guard);
+        $response->assertCookie($guard->getRecallerName());
         $this->assertNotNull($user->fresh()->remember_token);
     }
 
@@ -67,7 +71,10 @@ class AuthenticationTest extends TestCase
             'remember' => false,
         ]);
 
-        $response->assertCookieMissing(Auth::guard('web')->getRecallerName());
+        $guard = Auth::guard('web');
+
+        $this->assertInstanceOf(SessionGuard::class, $guard);
+        $response->assertCookieMissing($guard->getRecallerName());
         $this->assertNull($user->fresh()->remember_token);
     }
 

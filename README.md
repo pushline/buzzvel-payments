@@ -59,6 +59,33 @@ The Composer development command starts the Laravel server, queue listener, and
 Vite server. It intentionally does not start Laravel Pail because Pail requires
 the unavailable Windows `pcntl` extension.
 
+## Mailpit
+
+The included Docker Compose service runs Mailpit for testing outgoing email
+locally. Start it with:
+
+```powershell
+docker compose up -d mailpit
+```
+
+Configure Laravel to send email to Mailpit in `.env`:
+
+```dotenv
+MAIL_MAILER=smtp
+MAIL_HOST=127.0.0.1
+MAIL_PORT=1025
+MAIL_USERNAME=null
+MAIL_PASSWORD=null
+MAIL_SCHEME=null
+```
+
+Run `php artisan config:clear` after changing `.env`, then open the Mailpit inbox
+at `http://127.0.0.1:8025`. Stop the service with:
+
+```powershell
+docker compose down
+```
+
 ## Environment
 
 | Variable | Default | Purpose |
