@@ -1,6 +1,6 @@
 # BuzzPay
 
-BuzzPay is a Laravel 12 application for managing multi-currency payment
+BuzzPay is a Laravel 13 application for managing multi-currency payment
 requests. Employees submit requests in their assigned local currency. BuzzPay
 fetches and permanently stores the EUR conversion rate, while finance users
 review every request from a shared queue.

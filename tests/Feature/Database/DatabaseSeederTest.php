@@ -8,13 +8,17 @@ use App\Models\PaymentRequest;
 use App\Models\User;
 use App\Services\ExchangeRates\EurAmountConverter;
 use Database\Seeders\DatabaseSeeder;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Hash;
 use Tests\TestCase;
 
 class DatabaseSeederTest extends TestCase
 {
-    use RefreshDatabase;
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->artisan('migrate:fresh')->assertSuccessful();
+    }
 
     public function test_it_seeds_demo_users_across_countries_and_currencies(): void
     {

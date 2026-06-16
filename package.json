@@ -8,18 +8,18 @@
     },
     "devDependencies": {
         "@headlessui/react": "^2.0.0",
-        "@inertiajs/react": "^2.0.0",
+        "@inertiajs/react": "^3.4.0",
         "@tailwindcss/forms": "^0.5.11",
         "@tailwindcss/vite": "^4.3.1",
-        "@vitejs/plugin-react": "^4.2.0",
-        "axios": "^1.7.4",
+        "@vitejs/plugin-react": "^6.0.2",
+        "axios": "^1.18.0",
         "concurrently": "^10.0.3",
-        "laravel-vite-plugin": "^1.2.0",
+        "laravel-vite-plugin": "^3.1.0",
         "png-to-ico": "^3.0.1",
-        "react": "^18.2.0",
-        "react-dom": "^18.2.0",
+        "react": "^19.2.7",
+        "react-dom": "^19.2.7",
         "sharp": "^0.35.1",
         "tailwindcss": "^4.3.1",
-        "vite": "^6.0.11"
+        "vite": "^8.0.16"
     }
 }
